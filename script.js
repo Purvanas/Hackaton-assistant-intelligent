@@ -15,32 +15,27 @@ function chatbot(texte) {
     const ageEnHeures = Math.floor(differenceEnMillisecondes / (1000 * 60 * 60)); // Convertir en heures
     const ageEnJours = Math.floor(ageEnHeures / 24); // Convertir en jours
 
-    // Définir l'URL de l'API Weatherstack avec la clé d'accès et la ville (Paris) que vous souhaitez interroger
-    const apiUrl = 'http://api.weatherstack.com/current?access_key=b68eba772797ad8c6546bd192bab2e2b&query=Paris&language=fr';
-    //Fonction pour demander la météo a une API
-    const getMeteo = async() =>{
-        await fetch(apiUrl)
-        .then(response => {
-            // Vérifier si la réponse est OK (code 200)
-            if (!response.ok) {
-            throw new Error('Erreur de requête à l\'API Weatherstack');
-            }
-            // Convertir la réponse JSON en JavaScript
-            return response.json();
-        })
-        .then(data => {
-            // Utilisez les données de l'API ici
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Erreur :', error);
-        });
-        try {
-        // Évaluer l'expression de calcul et renvoyer le résultat 
-        } catch (erreur) {     
-        }
+    /*const apiKey = '4a76d20371523a0ef9d9c6e936d1cd77';
+    const lat = 48.8566; // Latitude de Paris
+    const lon = 2.3522; // Longitude de Paris*/
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Paris,fr&APPID=46eaf6e76b900a9c0619a1219e3514fa&lang=fr&units=metric`;
     
-    }
+    const getMeteo = async () => {
+        try {
+          //console.log("url : " + apiUrl);
+          const response = await fetch(apiUrl);
+      
+          if (!response.ok) {
+            throw new Error('Erreur réseau');
+          }
+      
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Erreur :', error);
+          throw error; // Vous pouvez choisir de propager l'erreur ou de la gérer ici
+        }
+      }
   
     const motsCles = {
       "bonjour": "Bonjour ! Comment puis-je vous aider ?",
@@ -69,6 +64,7 @@ function chatbot(texte) {
 
 
       "t'as un plat": "Je me nourris exclusivement de données personnelles",
+      "ta un plat": "Je me nourris exclusivement de données personnelles",
       "ton plat": "Je me nourris exclusivement de données personnelles",
       "ton plât": "Je me nourris exclusivement de données personnelles",
       "ton plas": "Je me nourris exclusivement de données personnelles",
@@ -86,36 +82,79 @@ function chatbot(texte) {
     try {
       // Évaluer l'expression de calcul et renvoyer le résultat
       const resultat = eval(expression);
-      return `Le résultat de ${expression} est : ${resultat}`;
+      let discutionJson= {
+        question : texte,
+        reponse : `Le résultat de ${expression} est : ${resultat}`,
+        date : dateActuelle,
+        heure : heureActuelle
+      }
+      console.log(discutionJson.reponse)
+      return discutionJson;
     } catch (erreur) {
-      return "Erreur lors de l'évaluation de l'expression de calcul.";
+      let discutionJson= {
+        question : texte,
+        reponse : "Erreur lors de l'évaluation de l'expression de calcul.",
+        date : dateActuelle,
+        heure : heureActuelle
+      }
+      console.log(discutionJson.reponse)
+      return discutionJson;
     }
   }
 
   if (texte.includes("météo"||"meteo")) {
 
-    // Effectuer une requête GET à l'API Weatherstack (api de météo)
-    return getMeteo()
+    const laMeteo = async () => {
+    try {
+        const meteoNow = await getMeteo();
+        let discutionJson = {
+        question: texte,
+        reponse: "à Paris le temps est " + meteoNow.weather[0].description + " et il fait " + meteoNow.main.temp + " C°",
+        date: dateActuelle,
+        heure: heureActuelle
+        }
+        console.log(discutionJson.reponse);
+        return discutionJson.reponse
+        } catch (error) {
+        console.error('Erreur lors de la récupération de la météo :', error);
+        }
+    }
 
-  }
+    let discutionJson = {
+        question: texte,
+        reponse: laMeteo(),
+        date: dateActuelle,
+        heure: heureActuelle
+        }
+        console.log(discutionJson.reponse)
+        return discutionJson;
+}
 
   
     for (const mot in motsCles) {
       if (texte.includes(mot)) {
-        return motsCles[mot];
+        let discutionJson= {
+            question : texte,
+            reponse : motsCles[mot],
+            date : dateActuelle,
+            heure : heureActuelle
+          }
+        console.log(discutionJson.reponse)
+        return discutionJson;
       }
     }
     
     try{
         let rep = ("le résultat est : " + eval(texte))
-        //console.log(rep)
         return rep
-    } catch (erreur){return "Je ne comprends pas. Pouvez-vous reformuler votre question ?";}
+    } catch (erreur){
+        let discutionJson= {
+            question : texte,
+            reponse : "Je ne comprends pas. Pouvez-vous reformuler votre question ?",
+            date : dateActuelle,
+            heure : heureActuelle
+          }
+        console.log(discutionJson.reponse)
+        return discutionJson;
+    }
   }
-  
-  
-  //teste de la fonction
-  //const print = "Bonjour, j'ai besoin d'aide.";
-  //const reponse = chatbot(print);
-  //console.log("bot : ", reponse);
-  
