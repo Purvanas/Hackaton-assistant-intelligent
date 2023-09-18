@@ -1,9 +1,23 @@
+
+// On empeche le formulaire de recherger la page pour ne pas reset le dialogue
+const formSubmit = document.getElementById("formSubmit")
+formSubmit.addEventListener("submit", function(event){
+  event.preventDefault();
+})
+
+
 // Fonction pour obtenir une réponse en fonction des mots-clés
+
+function resetChatBox() {
+  document.getElementById('chat-container').innerHTML = "";
+}
+
 function chatbot(texte) {
     // met le texte en minuscules pour faciliter
     texte = texte.toLowerCase();
 
-    //console.log("humain : ", texte);
+    const userTb = document.getElementById("user-input")
+    userTb.value ="";
 
     const dateActuelle = new Date();
     const heureActuelle = dateActuelle.toLocaleTimeString();
@@ -15,9 +29,6 @@ function chatbot(texte) {
     const ageEnHeures = Math.floor(differenceEnMillisecondes / (1000 * 60 * 60)); // Convertir en heures
     const ageEnJours = Math.floor(ageEnHeures / 24); // Convertir en jours
 
-    /*const apiKey = '4a76d20371523a0ef9d9c6e936d1cd77';
-    const lat = 48.8566; // Latitude de Paris
-    const lon = 2.3522; // Longitude de Paris*/
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Paris,fr&APPID=46eaf6e76b900a9c0619a1219e3514fa&lang=fr&units=metric`;
     
     const getMeteo = async () => {
@@ -36,6 +47,36 @@ function chatbot(texte) {
           throw error; // Vous pouvez choisir de propager l'erreur ou de la gérer ici
         }
       }
+    
+    const chatBox = document.getElementById("chat-container")
+
+    const chatBoxUser = (question) =>{
+      return(
+      `<div class="message user-message">
+      <img src="img/user.png" alt="Image utilisateur" class="user-avatar">
+      <div class="message-content">
+          <p>Vous : ${question}</p>
+      </div>
+      <div class="message-info">
+          <time id="user-message-time"> ${heureActuelle} </time>
+      </div>
+    </div>`)
+    }
+
+    const chatBoxBot = (reponse) =>{
+      return(
+      `<div class="message assistant-message">
+        <img src="img/bot.png" alt="Image assistant" class="assistant-avatar">
+        <div class="message-content">
+            <p>Assistant : ${reponse} </p>
+        </div>
+        <div class="message-info">
+            <time id="assistant-message-time"> ${heureActuelle} </time>
+        </div>
+      </div>`)
+    }
+
+    chatBox.insertAdjacentHTML("beforeend", chatBoxUser(texte))
   
       //plein de mots clés à chercher avec les réponses qui vont avec dans un dictionnaire
     const motsCles = {
@@ -90,6 +131,7 @@ function chatbot(texte) {
         heure : heureActuelle
       }
       console.log(discutionJson.reponse)
+      chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
       return discutionJson;
     } catch (erreur) {
       let discutionJson= {
@@ -99,6 +141,7 @@ function chatbot(texte) {
         heure : heureActuelle
       }
       console.log(discutionJson.reponse)
+      chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
       return discutionJson;
     }
   }
@@ -115,6 +158,7 @@ function chatbot(texte) {
         heure: heureActuelle
         }
         console.log(discutionJson.reponse);
+        chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson.reponse
         } catch (error) {
         console.error('Erreur lors de la récupération de la météo :', error);
@@ -128,6 +172,7 @@ function chatbot(texte) {
         heure: heureActuelle
         }
         console.log(discutionJson.reponse)
+        chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson;
 }
 
@@ -141,6 +186,7 @@ function chatbot(texte) {
             heure : heureActuelle
           }
         console.log(discutionJson.reponse)
+        chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson;
       }
     }
@@ -156,6 +202,9 @@ function chatbot(texte) {
             heure : heureActuelle
           }
         console.log(discutionJson.reponse)
+        chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson;
     }
   }
+
+

@@ -18,28 +18,7 @@
     </header>
     
     <div id="chat-container">
-        <div class="message user-message">
-            <img src="img/user.png" alt="Image utilisateur" class="user-avatar">
-            <div class="message-content">
-                <p>Vous : (Question ?)</p>
-            </div>
-            <div class="message-info">
-                <time id="user-message-time">(Date | Heure)</time>
-            </div>
-        </div>
 
-
-        <div class="message assistant-message">
-            <img src="img/bot.png" alt="Image assistant" class="assistant-avatar">
-            <div class="message-content">
-                <p>Assistant : (réponse) </p>
-            </div>
-            <div class="message-info">
-                <time id="assistant-message-time">(Date | Heure)</time>
-            </div>
-        </div>
-        
-        
                 
     </div>
         
@@ -47,7 +26,7 @@
     <div id="input-container">
         <input type="text" id="user-input" placeholder="Commencer la discution">
         <button class="send-button btn" onclick="chatbot(document.getElementById('user-input').value)">Envoyer</button>
-        <button class="reset-button btn" onclick="/*reset le chat*/">Réinitialiser</button>
+        <button class="reset-button btn" onclick="resetChatBox()">Réinitialiser</button>
     </div>
 </body>
 </html>
