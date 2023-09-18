@@ -1,0 +1,192 @@
+body, h1, p {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style de l'en-tête */
+header {
+    background-color: #017dea;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+
+
+/* Style du conteneur du chat */
+#chat-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(176, 176, 176); /* Fond pour l'arrière-plan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style pour la fenêtre de chat */
+#chat-window {
+    background-color: #fff;
+    width: 80%; /* Ajustez la largeur de la fenêtre de chat selon vos besoins */
+    max-width: 800px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Style pour la barre de navigation */
+.nav-bar {
+    background-color: #017dea;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Style pour le chat container */
+#chat-container {
+    height: 300px; /* Ajustez la hauteur de la fenêtre de chat selon vos besoins */
+    overflow-y: scroll; /* Ajoute une barre de défilement vertical */
+}
+
+/* Style des messages utilisateur et assistant */
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 70%;
+    max-width: 80%;
+}
+
+.user-message {
+    background: linear-gradient(to right, #f03c3c, #48cae4);
+    text-align: left;
+    float: right; /* Inversé par rapport à l'assistant */
+    clear: both;
+    color: white; /* Texte de l'utilisateur en blanc */
+}
+
+/* Style des messages de l'assistant */
+.assistant-message {
+    background-color: #ccc; /* Couleur grise */
+    text-align: left; /* Inversé par rapport à l'utilisateur */
+    float: left;
+    clear: both;
+    color: black; /* Texte de l'assistant en noir */
+}
+
+
+/* Style du formulaire d'entrée */
+#input-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#user-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    float: left;
+}
+
+button {
+    margin: 20px;
+  }
+  .send-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    margin-top: 1px; /* Ajustez la valeur pour déplacer le bouton plus haut */
+}
+
+
+/* Style pour le bouton Réinitialiser */
+.reset-button {
+    padding: 10px 20px;
+    background-color: #ff0000; /* Couleur rouge */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    margin-top: 1px; /* Ajustez la valeur pour déplacer le bouton plus haut */
+    margin-right: 500px; /* Ajustez la valeur pour déplacer le bouton vers la droite */
+}
+
+
+.reset-button.btn {
+    background: #f03c3c; /* Couleur rouge */
+    background: linear-gradient(0deg, #f03c3c 0%, #f03c3c 100%);
+}
+
+.reset-button.btn:before {
+    height: 0%;
+    width: 2px;
+}
+
+.reset-button.btn:hover {
+    box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+                  -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+        inset -4px -4px 6px 0 rgba(255,255,255,.2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}
+
+
+
+  .send-button.btn {
+    background: #017dea;
+    background: linear-gradient(0deg, #017dea 0%, rgba#017dea 100%);
+    border: none;
+    
+  }
+  .send-button.btn:before {
+    height: 0%;
+    width: 2px;
+  }
+  .send-button.btn:hover {
+    box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+                -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+      inset -4px -4px 6px 0 rgba(255,255,255,.2),
+      inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+  }
+
+/* Style pour les images de profil de l'utilisateur */
+.user-avatar {
+    width: 50px; /* Ajustez la taille en fonction de vos besoins */
+    height: 50px; /* Ajustez la taille en fonction de vos besoins */
+    border-radius: 50%; /* Pour rendre les images arrondies */
+    float: right; /* Position à droite pour l'utilisateur */
+    margin-right: 10px; /* Espace entre l'image et le texte du message */
+}
+
+/* Style pour les images de profil de l'assistant */
+.assistant-avatar {
+    width: 50px; /* Ajustez la taille en fonction de vos besoins */
+    height: 50px; /* Ajustez la taille en fonction de vos besoins */
+    border-radius: 50%; /* Pour rendre les images arrondies */
+    float: left; /* Position à gauche pour l'assistant */
+    margin-left: 0px; /* Espace entre l'image et le texte du message */
+}
+
+/* Style pour les informations d'heure et de date sous la bulle de message */
+.message-info {
+    font-size: 12px;
+    color: #2e2d2d;
+    text-align: left; /* Alignez les informations à gauche */
+    margin-top: 4px; /* Ajoutez un peu d'espace en haut */
+}
