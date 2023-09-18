@@ -37,6 +37,7 @@ function chatbot(texte) {
         }
       }
   
+      //plein de mots clés à chercher avec les réponses qui vont avec dans un dictionnaire
     const motsCles = {
       "bonjour": "Bonjour ! Comment puis-je vous aider ?",
       "salut": "Bonjour ! Comment puis-je vous aider ?",

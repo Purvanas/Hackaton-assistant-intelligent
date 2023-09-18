@@ -14,9 +14,9 @@
             <div class="nav-bar">
             </div>
     <header>
-    
         <h1>Assistance Virtuel - Posez vos questions</h1>
     </header>
+    
     <div id="chat-container">
         <div class="message user-message">
             <img src="img/user.png" alt="Image utilisateur" class="user-avatar">
@@ -27,6 +27,8 @@
                 <time id="user-message-time">(Date | Heure)</time>
             </div>
         </div>
+
+
         <div class="message assistant-message">
             <img src="img/bot.png" alt="Image assistant" class="assistant-avatar">
             <div class="message-content">
@@ -36,48 +38,15 @@
                 <time id="assistant-message-time">(Date | Heure)</time>
             </div>
         </div>
-        <div class="message user-message">
-            <img src="img/user.png" alt="Image utilisateur" class="user-avatar">
-            <div class="message-content">
-                <p>Vous : (Question ?)</p>
-            </div>
-            <div class="message-info">
-                <time id="user-message-time">(Date | Heure)</time>
-            </div>
-        </div>
-        <div class="message assistant-message">
-            <img src="img/bot.png" alt="Image assistant" class="assistant-avatar">
-            <div class="message-content">
-                <p>Assistant : (réponse) </p>
-            </div>
-            <div class="message-info">
-                <time id="assistant-message-time">(Date | Heure)</time>
-            </div>
-        </div>
-        <div class="message user-message">
-            <img src="img/user.png" alt="Image utilisateur" class="user-avatar">
-            <div class="message-content">
-                <p>Vous : (Question ?)</p>
-            </div>
-            <div class="message-info">
-                <time id="message-time">(Date | Heure)</time>
-            </div>
-        </div>
-        <div class="message assistant-message">
-            <img src="img/bot.png" alt="Image assistant" class="assistant-avatar">
-            <div class="message-content">
-                <p>Assistant : (réponse) </p>
-            </div>
-            <div class="message-info">
-                <time id="message-time">(Date | Heure)</time>
-            </div>
-        </div>
+        
+        
+                
     </div>
         
         
     <div id="input-container">
-        <input type="text" id="user-input" placeholder="Quelle heure est-il ?">
-        <button class="send-button btn">Envoyer</button>
+        <input type="text" id="user-input" placeholder="Commencer la discution">
+        <button class="send-button btn" onclick="chatbot(document.getElementById('user-input').value)">Envoyer</button>
         <button class="reset-button btn" onclick="/*reset le chat*/">Réinitialiser</button>
     </div>
 </body>
