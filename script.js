@@ -202,7 +202,14 @@ function chatbot(texte) {
     try{
       //si aucun mot clés n'est trouvé on test  eval() pour essayer de voir si c'est un calcule
         let rep = ("le résultat est : " + eval(texte))
-        return rep
+        let discutionJson= {
+          question : texte,
+          reponse : rep,
+          date_heure_envoi : dateActuelle.toString(),
+          date_heure_message : heureActuelle.toString()
+        }
+        chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
+        return discutionJson
     } catch (erreur){
         let discutionJson= {
             question : texte,
