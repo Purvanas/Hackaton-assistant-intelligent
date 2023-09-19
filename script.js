@@ -14,6 +14,7 @@ function resetChatBox() {
 
 function chatbot(texte) {
     // met le texte en minuscules pour faciliter
+    //console.log("plop");
     texte = texte.toLowerCase();
 
     const userTb = document.getElementById("user-input")
@@ -33,7 +34,7 @@ function chatbot(texte) {
     
     const getMeteo = async () => {
         try {
-          //console.log("url : " + apiUrl);
+          ////console.log("url : " + apiUrl);
           const response = await fetch(apiUrl);
       
           if (!response.ok) {
@@ -50,6 +51,8 @@ function chatbot(texte) {
     
     const chatBox = document.getElementById("chat-container")
 
+
+    // fonction qui renvoi une div qui va acceuillir la question de l'utilisateur 
     const chatBoxUser = (question) =>{
       return(
       `<div class="message user-message">
@@ -63,6 +66,7 @@ function chatbot(texte) {
     </div>`)
     }
 
+    // fonction qui renvoi une div qui va acceuillir la réponse du bot
     const chatBoxBot = (reponse) =>{
       return(
       `<div class="message assistant-message">
@@ -76,9 +80,10 @@ function chatbot(texte) {
       </div>`)
     }
 
-    chatBox.insertAdjacentHTML("beforeend", chatBoxUser(texte))
+    //insertion de la question de l'utilisateur dans la fenêtre de chat
+    chatBox.insertAdjacentHTML("beforeend", chatBoxUser(texte)) 
   
-      //plein de mots clés à chercher avec les réponses qui vont avec dans un dictionnaire
+    //plein de mots clés à chercher avec les réponses qui vont avec dans un dictionnaire
     const motsCles = {
       "bonjour": "Bonjour ! Comment puis-je vous aider ?",
       "salut": "Bonjour ! Comment puis-je vous aider ?",
@@ -127,20 +132,20 @@ function chatbot(texte) {
       let discutionJson= {
         question : texte,
         reponse : `Le résultat de ${expression} est : ${resultat}`,
-        date : dateActuelle,
-        heure : heureActuelle
+        date_heure_envoi : dateActuelle.toString(),
+        date_heure_message : heureActuelle.toString()
       }
-      console.log(discutionJson.reponse)
+      //console.log(discutionJson.reponse)
       chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
       return discutionJson;
     } catch (erreur) {
       let discutionJson= {
         question : texte,
         reponse : "Erreur lors de l'évaluation de l'expression de calcul.",
-        date : dateActuelle,
-        heure : heureActuelle
+        date_heure_envoi : dateActuelle.toString(),
+        date_heure_message : heureActuelle.toString()
       }
-      console.log(discutionJson.reponse)
+      //console.log(discutionJson.reponse)
       chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
       return discutionJson;
     }
@@ -154,12 +159,13 @@ function chatbot(texte) {
         let discutionJson = {
         question: texte,
         reponse: "à Paris le temps est " + meteoNow.weather[0].description + " et il fait " + meteoNow.main.temp + " C°",
-        date: dateActuelle,
-        heure: heureActuelle
+        date_heure_envoi: dateActuelle.toString(),
+        date_heure_message: heureActuelle.toString()
         }
-        console.log(discutionJson.reponse);
+        //console.log(discutionJson.reponse);
+        //insertion de la réponse du bot dans la fenêtre de chat
         chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
-        return discutionJson.reponse
+        return discutionJson
         } catch (error) {
         console.error('Erreur lors de la récupération de la météo :', error);
         }
@@ -168,10 +174,11 @@ function chatbot(texte) {
     let discutionJson = {
         question: texte,
         reponse: laMeteo(),
-        date: dateActuelle,
-        heure: heureActuelle
+        date_heure_envoi: dateActuelle.toString(),
+        date_heure_message: heureActuelle.toString()
         }
-        console.log(discutionJson.reponse)
+        //console.log(discutionJson.reponse)
+        //insertion de la réponse du bot dans la fenêtre de chat
         chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson;
 }
@@ -182,29 +189,61 @@ function chatbot(texte) {
         let discutionJson= {
             question : texte,
             reponse : motsCles[mot],
-            date : dateActuelle,
-            heure : heureActuelle
+            date_heure_envoi : dateActuelle.toString(),
+            date_heure_message : heureActuelle.toString()
           }
-        console.log(discutionJson.reponse)
+        //console.log(discutionJson.reponse)
+        //insertion de la réponse du bot dans la fenêtre de chat
         chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson;
       }
     }
     
     try{
+      //si aucun mot clés n'est trouvé on test  eval() pour essayer de voir si c'est un calcule
         let rep = ("le résultat est : " + eval(texte))
         return rep
     } catch (erreur){
         let discutionJson= {
             question : texte,
             reponse : "Je ne comprends pas. Pouvez-vous reformuler votre question ?",
-            date : dateActuelle,
-            heure : heureActuelle
+            date_heure_envoi : dateActuelle.toString(),
+            date_heure_message : heureActuelle.toString()
           }
-        console.log(discutionJson.reponse)
+        //console.log(discutionJson.reponse)
+        //insertion de la réponse du bot dans la fenêtre de chat
         chatBox.insertAdjacentHTML("beforeend", chatBoxBot(discutionJson.reponse))
         return discutionJson;
     }
   }
+
+
+
+async function discussion(question) {
+    try {
+      const resultat = await chatbot(question);
+      //console.log("resultat : " + JSON.stringify(resultat));
+  
+      const response = await fetch('appelerBdd.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(resultat)
+      });
+  
+      if (!response.ok) {
+        throw new Error('La requête a échoué');
+      }
+  
+      const data = await response.json();
+      // Traiter la réponse de la fonction sendBdd ici
+      console.log(data);
+      // Faire d'autres actions dans votre fonction chatbot
+    } catch (error) {
+      // Gérer les erreurs de requête fetch ici
+      console.error(error);
+    }
+}
 
 
